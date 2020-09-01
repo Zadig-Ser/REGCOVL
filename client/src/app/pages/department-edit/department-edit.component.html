@@ -1,0 +1,54 @@
+<!-- TITLE -->
+<div class="mb-40 mt-40">
+    <h1>Department Edit</h1>
+</div>
+<div class="card mb-40">
+    <div class="card-header">
+        <i class="fa fa-edit"></i> Edit
+    </div>
+    <div class="card-body">
+        <form #editForm="ngForm" [ngClass]="{'was-validated': formValid!=null}">
+            <div class="row justify-content-md-center">
+                <div class="col-md-10">
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" class="form-control" id="description" [(ngModel)]="item.description" name="description" #description="ngModel" >
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Name *</label>
+                        <input type="text" class="form-control" id="name" [(ngModel)]="item.name" name="name" #name="ngModel" required>
+                        <div class="invalid-feedback">Value is required</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="program">Program</label>
+                        <select name="program" id="program" [(ngModel)]="item.program" class="form-control" #program="ngModel" >
+                            <option value=""></option>
+                            <option value="BA">BA</option>
+                            <option value="BS">BS</option>
+                        </select>
+                    </div>
+                    <!-- RELATIONS -->
+                    <h2 class="mb-20">Relations</h2>
+
+                    <label for="student">Student</label>
+                    <select name="_student" id="_student" [(ngModel)]="item._student" class="form-control" #_student="ngModel"  >
+                        <option *ngFor="let item of list_student" [value]="item._id">{{item._id}}</option>
+                    </select>
+
+                    <h2 *ngIf="externalCourse__department[0]">External Relations</h2>
+        
+                        <h3 *ngIf="externalCourse__department[0]">Course</h3>
+                        <ul class="list-group">
+                        <li class="list-group-item" *ngFor="let item of externalCourse__department">{{item._id}}</li>
+                        </ul>
+
+                    <!-- BUTTON BAR -->
+                    <div class="mt-40">
+                        <button class="btn btn-primary pull-right" (click)="save(editForm.valid, item)">Save</button>
+                        <button class="btn btn-secondary pull-right mr-2" (click)="goBack()">Back To List</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

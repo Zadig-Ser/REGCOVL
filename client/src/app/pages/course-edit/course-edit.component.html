@@ -1,0 +1,121 @@
+<!-- TITLE -->
+<div class="mb-40 mt-40">
+    <h1>Course Edit</h1>
+</div>
+<div class="card mb-40">
+    <div class="card-header">
+        <i class="fa fa-edit"></i> Edit
+    </div>
+    <div class="card-body">
+        <form #editForm="ngForm" [ngClass]="{'was-validated': formValid!=null}">
+            <div class="row justify-content-md-center">
+                <div class="col-md-10">
+                    <div class="form-group">
+                        <label for="academicTerm">AcademicTerm</label>
+                        <select name="academicTerm" id="academicTerm" [(ngModel)]="item.academicTerm" class="form-control" #academicTerm="ngModel" >
+                            <option value=""></option>
+                            <option value="I">I</option>
+                            <option value="II">II</option>
+                            <option value="III">III</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="academicYear">AcademicYear</label>
+                        <select name="academicYear" id="academicYear" [(ngModel)]="item.academicYear" class="form-control" #academicYear="ngModel" >
+                            <option value=""></option>
+                            <option value="I">I</option>
+                            <option value="II">II</option>
+                            <option value="III">III</option>
+                            <option value="IV">IV</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select name="category" id="category" [(ngModel)]="item.category" class="form-control" #category="ngModel" >
+                            <option value=""></option>
+                            <option value="common">common</option>
+                            <option value="core">core</option>
+                            <option value="supportive">supportive</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseCode">CourseCode *</label>
+                        <input type="text" class="form-control" id="courseCode" [(ngModel)]="item.courseCode" name="courseCode" #courseCode="ngModel" required>
+                        <div class="invalid-feedback">Value is required</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="creditHour">CreditHour</label>
+                        <select name="creditHour" id="creditHour" [(ngModel)]="item.creditHour" class="form-control" #creditHour="ngModel" >
+                            <option value=""></option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <input type="text" class="form-control" id="department" [(ngModel)]="item.department" name="department" #department="ngModel" >
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Name *</label>
+                        <input type="text" class="form-control" id="name" [(ngModel)]="item.name" name="name" #name="ngModel" required>
+                        <div class="invalid-feedback">Value is required</div>
+                    </div>
+                    <!-- RELATIONS -->
+                    <h2 class="mb-20">Relations</h2>
+
+                    <div class="pb-30">
+                        <div class="mb-20">
+                            <label>_department</label>
+
+                            <span class="dropdown ml-20">
+                                <button class="btn btn-dropdown dropdown-toggle" type="button" id="dropdownMenuButton_department" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                    Add
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton_department">
+                                    <button class="dropdown-item" *ngFor="let item of list_department" [class.disabled]="containDepartment(item._id)" (click)="$event.preventDefault(); containDepartment(item._id) || addDepartment(item._id)">{{item._id}}
+                                    </button>
+                                </div>
+                            </span>
+                        </div>
+                        <div class="mb-40">
+                            <ul class="list-group">
+                                <li class="list-group-item" *ngIf="!item._department || item._department.length == 0">No item found</li>
+                                <li class="list-group-item" *ngFor="let obj of item._department; let i = index">
+                                    {{obj}}
+
+                                    <button class="btn btn-danger pull-right" type="button" (click)="removeDepartment(i)">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h2 *ngIf="externalExamination__course[0] || externalGrade__courses[0] || externalStudent__courses[0]">External Relations</h2>
+        
+                        <h3 *ngIf="externalExamination__course[0]">Examination</h3>
+                        <ul class="list-group">
+                        <li class="list-group-item" *ngFor="let item of externalExamination__course">{{item._id}}</li>
+                        </ul>
+                        <h3 *ngIf="externalGrade__courses[0]">Grade</h3>
+                        <ul class="list-group">
+                        <li class="list-group-item" *ngFor="let item of externalGrade__courses">{{item._id}}</li>
+                        </ul>
+                        <h3 *ngIf="externalStudent__courses[0]">Student</h3>
+                        <ul class="list-group">
+                        <li class="list-group-item" *ngFor="let item of externalStudent__courses">{{item._id}}</li>
+                        </ul>
+
+                    <!-- BUTTON BAR -->
+                    <div class="mt-40">
+                        <button class="btn btn-primary pull-right" (click)="save(editForm.valid, item)">Save</button>
+                        <button class="btn btn-secondary pull-right mr-2" (click)="goBack()">Back To List</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

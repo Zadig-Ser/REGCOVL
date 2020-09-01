@@ -1,0 +1,145 @@
+<!-- TITLE -->
+<div class="mb-40 mt-40">
+    <h1>Student List</h1>
+</div>
+
+<!-- SEARCH FORM -->
+<div class="card">
+
+    <div class="card-header">
+        <i class="fa fa-search"></i> Search
+    </div>
+    <div class="card-body">
+        <form #searchForm="ngForm">
+            <div class="row justify-content-md-center">
+                <div class="col-md-10">
+                    <div class="form-group">
+                        <label for="center">Center</label>
+                        <input type="text" class="form-control" id="center" [(ngModel)]="search.center" name="center" #center="ngModel">
+                    </div>
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <input type="text" class="form-control" id="department" [(ngModel)]="search.department" name="department" #department="ngModel">
+                    </div>
+                    <div class="form-group">
+                        <label for="doAdmission">DoAdmission</label>
+                        <input type="date" class="form-control" id="doAdmission" [(ngModel)]="search.doAdmission" name="doAdmission" #doAdmission="ngModel">
+                    </div>
+                    <div class="form-group">
+                        <label for="dob">Dob</label>
+                        <input type="date" class="form-control" id="dob" [(ngModel)]="search.dob" name="dob" #dob="ngModel">
+                    </div>
+                    <div class="form-group">
+                        <label for="fatherName">FatherName</label>
+                        <input type="text" class="form-control" id="fatherName" [(ngModel)]="search.fatherName" name="fatherName" #fatherName="ngModel">
+                    </div>
+                    <div class="form-group">
+                        <label for="givenName">GivenName</label>
+                        <input type="text" class="form-control" id="givenName" [(ngModel)]="search.givenName" name="givenName" #givenName="ngModel">
+                    </div>
+                    <div class="form-group">
+                        <label for="grandFatherName">GrandFatherName</label>
+                        <input type="text" class="form-control" id="grandFatherName" [(ngModel)]="search.grandFatherName" name="grandFatherName" #grandFatherName="ngModel">
+                    </div>
+                    <div class="form-group">
+                        <label for="sex">Sex</label>
+                        <select name="sex" id="sex" [(ngModel)]="search.sex" class="form-control" #sex="ngModel">
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select name="status" id="status" [(ngModel)]="search.status" class="form-control" #status="ngModel">
+                            <option value="dismissed">dismissed</option>
+                            <option value="pending">pending</option>
+                            <option value="probation">probation</option>
+                            <option value="promoted">promoted</option>
+                            <option value="registered">registered</option>
+                            <option value="withdrawn">withdrawn</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- TABLE -->
+<table class="table mt-40">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">center</th>
+            <th scope="col">department</th>
+            <th scope="col">doAdmission</th>
+            <th scope="col">dob</th>
+            <th scope="col">fatherName</th>
+            <th scope="col">givenName</th>
+            <th scope="col">grandFatherName</th>
+            <th scope="col">sex</th>
+            <th scope="col">status</th>
+            <th>Remove</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of list | search: { 'center': search.center, 'department': search.department, 'doAdmission': search.doAdmission, 'dob': search.dob, 'fatherName': search.fatherName, 'givenName': search.givenName, 'grandFatherName': search.grandFatherName, 'sex': search.sex, 'status': search.status }">
+            <!-- ATTRIBUTES -->
+            <td>
+                <a [routerLink]="['/students/', item._id]">{{item._id}}</a>
+            </td>
+            <td>{{item.center }}</td>
+            <td>{{item.department }}</td>
+            <td>{{item.doAdmission | date }}</td>
+            <td>{{item.dob | date }}</td>
+            <td>{{item.fatherName }}</td>
+            <td>{{item.givenName }}</td>
+            <td>{{item.grandFatherName }}</td>
+            <td>{{item.sex }}</td>
+            <td>{{item.status }}</td>
+
+            <!-- DELETE BUTTON -->
+            <td>
+                <button class="btn btn-danger text-center" data-toggle="modal" data-target="#deleteModal" (click)="selectId(item._id)">
+                    <span>
+                        <i class="fa fa-trash"></i>
+                    </span>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+    <div class="no-result" *ngIf="(list | search: {   'center': search.center ,  'department': search.department ,  'doAdmission': search.doAdmission ,  'dob': search.dob ,  'fatherName': search.fatherName ,  'givenName': search.givenName ,  'grandFatherName': search.grandFatherName ,  'sex': search.sex ,  'status': search.status  }).length == 0">
+        No items found
+    </div>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    <i class="fa fa-times-circle"></i>&nbsp;&nbsp;Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Do you want remove item?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="deleteItem()">YES</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- BUTTON -->
+<button class="btn btn-primary text-center pull-right mb-20" routerLink="/students/new">
+    <span>
+        <i class="fa fa-plus"></i>
+    </span>
+</button>
+
+<div class="clearfix"></div>
